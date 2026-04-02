@@ -22,7 +22,7 @@ BEGIN
         Id INT PRIMARY KEY IDENTITY(1,1),
         Email VARCHAR(250) NOT NULL UNIQUE,
         FullName VARCHAR(250),
-        Password VARCHAR(250),
+        Password VARCHAR(250) NOT NULL,
         RoleId INT FOREIGN KEY REFERENCES Roles(Id),
         Location VARCHAR(250)
     );
