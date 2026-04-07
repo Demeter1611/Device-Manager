@@ -14,7 +14,7 @@ public class Device
     public int DeviceTypeId { get; set; }
 
     [ForeignKey("DeviceTypeId")]
-    public DeviceType DeviceType { get; set; }
+    public DeviceType? DeviceType { get; set; }
 
     public string? OperatingSystem { get; set; }
     public string? OsVersion { get; set; }
