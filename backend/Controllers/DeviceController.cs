@@ -46,6 +46,13 @@ public class DeviceController: ControllerBase
     {
         _context.Devices.Add(device);
         await _context.SaveChangesAsync();
+
+        await _context.Entry(device).Reference(d => d.DeviceType).LoadAsync();
+    
+        if (device.CurrentUserId != null)
+        {
+            await _context.Entry(device).Reference(d => d.CurrentUser).LoadAsync();
+        }
         
         var dto = device.MapToReadDto();
 

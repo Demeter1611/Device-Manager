@@ -37,4 +37,30 @@ public static class MappingExtensions
             CurrentUserFullName = d.CurrentUser != null ? d.CurrentUser.FullName : "Unassigned"
         });
     }
+
+    public static UserReadDto MapToReadDto(this User u)
+    {
+        return new UserReadDto
+        {
+            Id = u.Id,
+            Email = u.Email,
+            FullName = u.FullName,
+            RoleName = u.Role != null ? u.Role.Name : "Unknown",
+            Location = u.Location,
+            DeviceNames = u.Devices.Select(d => d.Name).ToList()
+        };
+    }
+
+    public static IQueryable<UserReadDto> ProjectToReadDto(this IQueryable<User> query)
+    {
+        return query.Select(u => new UserReadDto
+        {
+            Id = u.Id,
+            Email = u.Email,
+            FullName = u.FullName,
+            RoleName = u.Role != null ? u.Role.Name : "Unknown",
+            Location = u.Location,
+            DeviceNames = u.Devices.Select(d => d.Name).ToList()
+        });
+    }
 }
