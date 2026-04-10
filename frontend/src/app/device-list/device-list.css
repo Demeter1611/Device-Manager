@@ -37,7 +37,8 @@
 }
 
 .action-buttons button {
-  width: 45%;
+  width: 30%;
+  height: 100%;
   background-color: transparent;
   border: 1px solid black;
 }
@@ -45,6 +46,3 @@
 .action-buttons #delete{
   color: red;
 }
-
-
-

@@ -1,0 +1,30 @@
+h3{
+  font-size: 1.8rem;
+}
+
+.details-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.description-field{
+  grid-column: span 2;
+}
+
+.field-label{
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.field-info{
+  padding-left: 5px;
+}
+
+#close-btn{
+  grid-column: span 2;
+  justify-self: center;
+  width: 30%;
+  height: 30px;
+  background-color: transparent;
+}

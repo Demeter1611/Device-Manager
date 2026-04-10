@@ -1,0 +1,64 @@
+.form-field{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+form{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.text-input{
+  padding: 5px;
+  font-size: 1.2rem;
+}
+
+select{
+  padding: 5px;
+  font-size: 1.2rem;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.form-buttons{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.form-buttons button{
+  background-color: rgb(123, 123, 243);
+  color: white;
+  border: 0px;
+  font-size: 1.2rem;
+}
+
+.text-input.ng-invalid.ng-touched {
+  border: 1px solid #d83b01;
+}
+
+textarea{
+  resize: none;
+}
+
+.error-text{
+  color: red;
+  font-size: 0.7rem;
+  padding-left: 10px;
+}
+
+.description-field{
+  grid-column: span 2;
+}
