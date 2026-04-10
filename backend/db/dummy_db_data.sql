@@ -8,11 +8,11 @@ DBCC CHECKIDENT ('Users', RESEED, 0);
 DBCC CHECKIDENT ('Devices', RESEED, 0);
 GO
 
-INSERT INTO Users (Email, FullName, Password, RoleId, Location)
+INSERT INTO Users (Email, FullName, Password, RoleId)
 VALUES  
-('admin@test.com', 'Admin User', 'password123', 1, 'Bucharest'),
-('mihai.frasinaru@test.com', 'Mihai Frasinaru', 'userpass1', 2, 'Cluj-Napoca'), 
-('anda.popescu@test.com', 'Anda Popescu', 'userpass2', 2, 'Iasi');
+('admin@test.com', 'Admin User', 'password123', 1),
+('mihai.frasinaru@test.com', 'Mihai Frasinaru', 'userpass1', 2), 
+('anda.popescu@test.com', 'Anda Popescu', 'userpass2', 2);
 GO
 
 INSERT INTO Devices (Name, Manufacturer, DeviceTypeId, OperatingSystem, OsVersion, Processor, RamAmount, Description, CurrentUserId)

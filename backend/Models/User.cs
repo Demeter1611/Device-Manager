@@ -19,7 +19,6 @@ public class User
 
     [ForeignKey("RoleId")]
     public Role? Role { get; set; }
-    public string? Location { get; set; }
 
     public ICollection<Device> Devices { get; set; } = new List<Device> ();
 }

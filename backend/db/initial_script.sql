@@ -24,7 +24,6 @@ BEGIN
         FullName VARCHAR(250),
         Password VARCHAR(250) NOT NULL,
         RoleId INT FOREIGN KEY REFERENCES Roles(Id),
-        Location VARCHAR(250)
     );
 END
 
