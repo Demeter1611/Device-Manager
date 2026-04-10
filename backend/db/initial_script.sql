@@ -41,7 +41,7 @@ IF OBJECT_ID('Devices') IS NULL
 BEGIN
     CREATE TABLE Devices(
         Id INT PRIMARY KEY IDENTITY(1,1),
-        Name VARCHAR(250) NOT NULL,
+        Name VARCHAR(250) NOT NULL UNIQUE,
         Manufacturer VARCHAR(250),
         DeviceTypeId INT FOREIGN KEY REFERENCES DeviceTypes(Id),
         OperatingSystem VARCHAR(250),

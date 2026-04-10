@@ -1,7 +1,8 @@
 import { DeviceReadDto } from './../interfaces/device';
 import { Component, inject, input, output } from "@angular/core";
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { DeviceService } from "../services/device-service";
+import { catchError, map, of } from 'rxjs';
 
 @Component({
   selector: 'app-device-form',
@@ -14,7 +15,10 @@ import { DeviceService } from "../services/device-service";
           <div class="form-field">
             <label for="name">Name</label>
             <input class="text-input" id="name" type="text" formControlName="name"/>
-            @if(isInvalid("name")){
+            @if(deviceForm.get('name')?.errors?.['nameTaken'] && deviceForm.get('name')?.touched){
+              <span class="error-text">Name already exists</span>
+            }
+            @else if(isInvalid("name")){
               <span class="error-text">Field required</span>
             }
           </div>
@@ -62,11 +66,11 @@ import { DeviceService } from "../services/device-service";
           <div class="form-field">
             <label for="ram-amount">RAM amount (MB)</label>
             <input class="text-input" id="ram-amount" type="number" formControlName="ramAmount">
-            @if(isInvalid("ramAmount")){
-              <span class="error-text">Field required</span>
-            }
             @if (deviceForm.get('ramAmount')?.errors?.['min'] && deviceForm.get('ramAmount')?.touched) {
               <span class="error-text">RAM must be at least 1 MB.</span>
+            }
+            @else if(isInvalid("ramAmount")){
+              <span class="error-text">Field required</span>
             }
           </div>
 
@@ -103,9 +107,8 @@ export class DeviceForm{
   ngOnInit(){
     this.deviceForm = new FormGroup(
       {
-        name: new FormControl('', [
-          Validators.required
-        ]),
+        name: new FormControl('',
+          [Validators.required], [this.uniqueNameValidator()]),
         manufacturer: new FormControl('', [
           Validators.required
         ]),
@@ -175,5 +178,21 @@ export class DeviceForm{
           error: (err) => alert(`Error with saving device: ${err.message}`)
       });
     }
+  }
+
+  private uniqueNameValidator() {
+    return (control: AbstractControl) => {
+      const name = control.value;
+      const device = this.selectedDevice();
+      if (!name) {
+        return of(null);
+      }
+      return this.deviceService
+        .checkNameExists(name, device?.id)
+        .pipe(
+          map(exists => (exists ? { nameTaken: true } : null)),
+          catchError(() => of(null as any))
+        );
+    };
   }
 }

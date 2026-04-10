@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Device, DeviceReadDto } from "../interfaces/device";
@@ -26,5 +26,13 @@ export class DeviceService {
 
   deleteDevice(id: number): Observable<void>{
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  checkNameExists(name: string, excludeId?: number): Observable<boolean> {
+    let params = new HttpParams().set('name', name);
+    if (excludeId) {
+      params = params.set('excludeId', excludeId.toString());
+    }
+    return this.http.get<boolean>(`${this.apiUrl}/check-exists`, { params });
   }
 }

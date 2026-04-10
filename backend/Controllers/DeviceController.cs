@@ -27,6 +27,21 @@ public class DeviceController: ControllerBase
 
     }
 
+    [HttpGet("check-exists")]
+    public async Task<ActionResult<bool>> CheckNameExists([FromQuery] string name, [FromQuery] int? excludeId = null)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return BadRequest("Name is required for checking.");    
+        }
+        
+        var normalizedName = name.Trim().ToLower();
+        bool exists = await _context.Devices
+            .AnyAsync(d => d.Name.ToLower() == normalizedName &&
+                (excludeId == null || d.Id != excludeId));
+        return Ok(exists);
+    }
+
     [HttpGet("{id}")]
     public async Task<ActionResult<DeviceReadDto>> GetDevice(int id)
     {
