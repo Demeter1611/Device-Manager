@@ -9,8 +9,8 @@ import { DeviceService } from "../services/device-service";
       <div class="modal-content" (click)="$event.stopPropagation()">
         <h3>Are you sure you want to delete device "{{selectedDevice().name}}"?</h3>
         <div class="action-buttons">
-          <button (click)="onConfirm()">Yes</button>
-          <button id="decline-btn" (click)="this.close.emit()">No</button>
+          <button id="confirm-btn" (click)="onConfirm()">Yes</button>
+          <button (click)="this.close.emit()">No</button>
         </div>
       </div>
     </div>

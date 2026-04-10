@@ -39,10 +39,12 @@
 .action-buttons button {
   width: 30%;
   height: 100%;
-  background-color: transparent;
-  border: 1px solid black;
+  border: 0px;
+  color: white;
+  background-color: rgb(155, 155, 255);
+  border-radius: 6px;
 }
 
 .action-buttons #delete{
-  color: red;
+  background-color: rgb(216, 115, 115);
 }

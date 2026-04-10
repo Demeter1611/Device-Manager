@@ -46,7 +46,6 @@ public static class MappingExtensions
             Email = u.Email,
             FullName = u.FullName,
             RoleName = u.Role != null ? u.Role.Name : "Unknown",
-            DeviceNames = u.Devices.Select(d => d.Name).ToList()
         };
     }
 
@@ -58,7 +57,6 @@ public static class MappingExtensions
             Email = u.Email,
             FullName = u.FullName,
             RoleName = u.Role != null ? u.Role.Name : "Unknown",
-            DeviceNames = u.Devices.Select(d => d.Name).ToList()
         });
     }
 }

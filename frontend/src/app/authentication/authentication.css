@@ -1,0 +1,59 @@
+.authentication-page{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 20px);
+  background-color: #f0f2f5;
+}
+
+.form-container{
+  padding: 2.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  background-color: white;
+}
+
+.form-field{
+  text-align: left;
+}
+
+.form-field label{
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+}
+
+.footer-text{
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 5px;
+  color: rgb(119, 119, 119);
+}
+
+.nav-text{
+  font-size: 0.9rem;
+  color: rgb(155, 155, 255);
+}
+
+.nav-text:hover{
+  cursor: pointer;
+}
+
+.submit-btn{
+  width: 100%;
+  padding: 18px;
+  background-color: rgb(155, 155, 255);
+  color: white;
+  border: 0px;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 6px;
+}
+
+h3{
+  font-size: 1.7rem;
+}

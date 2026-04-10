@@ -1,4 +1,4 @@
-import { Component, inject } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 import { DeviceService } from "../services/device-service";
 import { DeviceReadDto } from "../interfaces/device";
 import { DeviceForm } from "../device-form/device-form";
@@ -22,7 +22,7 @@ import { DeviceDetailsComponent } from "../device-details/device-details";
           </tr>
         </thead>
         <tbody>
-          @for(device of devices; track $index){
+          @for(device of devices(); track $index){
             <tr>
               <td>{{ device.name }}</td>
               <td>{{ device.deviceTypeName }}</td>
@@ -30,8 +30,8 @@ import { DeviceDetailsComponent } from "../device-details/device-details";
               <td>{{ device.currentUserFullName }}</td>
               <td class="action-buttons">
                 <button (click)="onDetails(device)">Details</button>
-                <button id="delete" (click)="onDelete(device)">Delete</button>
                 <button (click)="onEdit(device)">Edit</button>
+                <button id="delete" (click)="onDelete(device)">Delete</button>
               </td>
             </tr>
           }
@@ -39,13 +39,14 @@ import { DeviceDetailsComponent } from "../device-details/device-details";
       </table>
       @if(deviceFormOpen){
         <app-device-form
-        (saved)="onDeviceSaved()"
+        (saved)="onSaved()"
         (close)="onModalClosed()"
         [selectedDevice]="selectedDevice"/>
       }
       @if(deleteOpen && selectedDevice){
         <app-device-delete
         (close)="onModalClosed()"
+        (saved)="onSaved()"
         [selectedDevice]="selectedDevice"/>
       }
       @if(detailsOpen && selectedDevice){
@@ -60,7 +61,7 @@ import { DeviceDetailsComponent } from "../device-details/device-details";
 })
 export class DeviceListComponent {
   deviceService = inject(DeviceService);
-  devices: DeviceReadDto[] = [];
+  devices = signal<DeviceReadDto[]>([]);
   deviceFormOpen: boolean = false;
   deleteOpen: boolean = false;
   detailsOpen: boolean = false;
@@ -73,13 +74,13 @@ export class DeviceListComponent {
   loadDevices() {
     this.deviceService.getDevices().subscribe({
       next: (data) => {
-        this.devices = data;
+        this.devices.set(data);
       },
       error: (err) => console.error('Error fetching devices', err)
     });
   }
 
-  onDeviceSaved(){
+  onSaved(){
     this.loadDevices();
     this.selectedDevice = null;
   }
