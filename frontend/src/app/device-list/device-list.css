@@ -33,18 +33,21 @@
 .action-buttons {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 8px;
 }
 
 .action-buttons button {
-  width: 30%;
+  flex: 1;
+  min-width: 80px;
   height: 100%;
-  border: 0px;
-  color: white;
-  background-color: rgb(155, 155, 255);
-  border-radius: 6px;
 }
 
 .action-buttons #delete{
   background-color: rgb(216, 115, 115);
+}
+
+#no-action-text{
+  color: #999;
+  font-style: italic;
 }

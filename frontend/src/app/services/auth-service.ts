@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { Injectable, signal } from "@angular/core";
 import { Observable, tap } from "rxjs";
 import { AuthResponse } from "../interfaces/user";
 
@@ -8,6 +8,7 @@ import { AuthResponse } from "../interfaces/user";
 })
 export class AuthService {
   private apiUrl = 'http://localhost:5164/api/auth';
+  currentUser = signal<any>(this.getUserFromLocalStorage());
 
   constructor(private http: HttpClient){}
 
@@ -20,6 +21,7 @@ export class AuthService {
       tap(response => {
         localStorage.setItem('token', response.token);
         localStorage.setItem('user', JSON.stringify(response.user));
+        this.currentUser.set(response.user);
       })
     )
   }
@@ -31,14 +33,23 @@ export class AuthService {
   logout(){
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    this.currentUser.set(null);
   }
 
   isLoggedIn(): boolean {
-    return !!this.getToken();
+    return !!this.currentUser();
+  }
+
+  private getUserFromLocalStorage() {
+    const userJson = localStorage.getItem("user");
+    try{
+      return userJson ? JSON.parse(userJson) : null;
+    } catch {
+      return null;
+    }
   }
 
   get user(){
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
+    return this.currentUser();
   }
 }

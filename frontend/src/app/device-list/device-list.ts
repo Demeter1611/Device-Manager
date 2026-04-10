@@ -4,13 +4,16 @@ import { DeviceReadDto } from "../interfaces/device";
 import { DeviceForm } from "../device-form/device-form";
 import { DeviceDeleteComponent } from "../device-delete/device-delete";
 import { DeviceDetailsComponent } from "../device-details/device-details";
+import { AuthService } from "../services/auth-service";
 
 @Component({
   selector: 'app-device-list',
   template: `
     <div class="container">
       <h2>Device Inventory</h2>
-      <button id="add-btn" (click)="onAddNewDevice()">Add new device</button>
+      @if(authService.user.roleName === "admin"){
+        <button id="add-btn" (click)="onAddNewDevice()">Add new device</button>
+      }
       <table class="device-table">
         <thead>
           <tr>
@@ -29,9 +32,22 @@ import { DeviceDetailsComponent } from "../device-details/device-details";
               <td>{{ device.manufacturer}}</td>
               <td>{{ device.currentUserFullName }}</td>
               <td class="action-buttons">
-                <button (click)="onDetails(device)">Details</button>
-                <button (click)="onEdit(device)">Edit</button>
-                <button id="delete" (click)="onDelete(device)">Delete</button>
+                @if(authService.user.roleName === "admin"){
+                  <button (click)="onDetails(device)">Details</button>
+                  <button (click)="onEdit(device)">Edit</button>
+                  <button id="delete" (click)="onDelete(device)">Delete</button>
+                }
+                @else {
+                  @if(device.currentUserFullName === "Unassigned") {
+                    <button>Assign</button>
+                  }
+                  @else if(device.currentUserFullName === authService.user.fullName){
+                    <button>Unassign</button>
+                  }
+                  @else {
+                    <span id="no-action-text">No actions</span>
+                  }
+                }
               </td>
             </tr>
           }
@@ -61,6 +77,7 @@ import { DeviceDetailsComponent } from "../device-details/device-details";
 })
 export class DeviceListComponent {
   deviceService = inject(DeviceService);
+  authService = inject(AuthService);
   devices = signal<DeviceReadDto[]>([]);
   deviceFormOpen: boolean = false;
   deleteOpen: boolean = false;
