@@ -145,7 +145,6 @@ public class DeviceController: ControllerBase
         var existing = await _context.Devices.FindAsync(id);
         if(existing == null)
             return NotFound();
-        
         _context.Entry(existing).CurrentValues.SetValues(device);
 
         await _context.SaveChangesAsync();

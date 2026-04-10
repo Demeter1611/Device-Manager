@@ -39,10 +39,10 @@ import { AuthService } from "../services/auth-service";
                 }
                 @else {
                   @if(device.currentUserFullName === "Unassigned") {
-                    <button>Assign</button>
+                    <button (click)="onAssign(device)">Assign</button>
                   }
                   @else if(device.currentUserFullName === authService.user.fullName){
-                    <button>Unassign</button>
+                    <button (click)="onUnassign(device)">Unassign</button>
                   }
                   @else {
                     <span id="no-action-text">No actions</span>
@@ -126,5 +126,23 @@ export class DeviceListComponent {
   onDetails(device: DeviceReadDto){
     this.selectedDevice = device;
     this.detailsOpen = true;
+  }
+
+  onAssign(device: DeviceReadDto){
+    this.deviceService.assignDevice(device.id).subscribe({
+      next: () => {
+        this.loadDevices();
+      },
+      error: (err) => alert(`Error with assigning device: ${err.message}`)
+    });
+  }
+
+  onUnassign(device: DeviceReadDto){
+    this.deviceService.unassignDevice(device.id).subscribe({
+      next: () => {
+        this.loadDevices();
+      },
+      error: (err) => alert(`Error with unassigning device: ${err.message}`)
+    })
   }
 }

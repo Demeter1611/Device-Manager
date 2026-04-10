@@ -134,7 +134,6 @@ export class DeviceForm{
     )
 
     const device = this.selectedDevice();
-    console.log(device);
     if(device){
       this.deviceForm.patchValue(device);
       this.deviceForm.get('deviceTypeId')?.setValue(

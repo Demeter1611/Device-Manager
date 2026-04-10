@@ -35,4 +35,12 @@ export class DeviceService {
     }
     return this.http.get<boolean>(`${this.apiUrl}/check-exists`, { params });
   }
+
+  assignDevice(id: number): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/assign/${id}`, {});
+  }
+
+  unassignDevice(id: number): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/unassign/${id}`, {});
+  }
 }
