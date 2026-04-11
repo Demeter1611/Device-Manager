@@ -21,7 +21,7 @@
   color: white;
   padding: 20px;
   border: 0px;
-  font-size: 1.5rem;
+  font-size: 1rem;
 }
 
 .search-input {
@@ -58,20 +58,19 @@
 }
 
 .device-table td{
-  padding: 10px;
+  padding: 16px 20px;
   border-bottom: 1px solid rgb(204, 203, 203);
 }
 
 .action-buttons {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 8px;
 }
 
 .action-buttons button {
-  flex: 1;
-  min-width: 80px;
+  width: 90px;
   height: 100%;
 }
 
@@ -86,4 +85,9 @@
 
 .unassign-btn{
   background-color: rgb(189, 189, 189);
+}
+
+.unassigned-text{
+  color: grey;
+  font-style: italic;
 }

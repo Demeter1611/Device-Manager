@@ -13,10 +13,12 @@ import { debounceTime, distinctUntilChanged, switchMap } from "rxjs";
   template: `
     <div class="container">
       <h2>Device Inventory</h2>
-      <input type="text" [formControl]="searchControl" class="search-input" placeholder="Search by name, manufacturer, processor or RAM(e.g. 8GB)"/>
-      @if(authService.user.roleName === "admin"){
-        <button id="add-btn" (click)="onAddNewDevice()">Add new device</button>
-      }
+      <div class="table-actions">
+        <input type="text" [formControl]="searchControl" class="search-input" placeholder="Search by name, manufacturer, processor or RAM(e.g. 8GB)"/>
+        @if(authService.user.roleName === "admin"){
+          <button id="add-btn" (click)="onAddNewDevice()">Add new device</button>
+        }
+      </div>
       <div class="table-wrapper">
         <table class="device-table">
           <thead>
@@ -34,10 +36,10 @@ import { debounceTime, distinctUntilChanged, switchMap } from "rxjs";
                 <td>{{ device.name }}</td>
                 <td>{{ device.deviceTypeName }}</td>
                 <td>{{ device.manufacturer}}</td>
-                <td>{{ device.currentUserFullName }}</td>
+                <td [class.unassigned-text] = "device.currentUserFullName === 'Unassigned' ">{{ device.currentUserFullName }}</td>
                 <td class="action-buttons">
+                  <button (click)="onDetails(device)">Details</button>
                   @if(authService.user.roleName === "admin"){
-                    <button (click)="onDetails(device)">Details</button>
                     <button (click)="onEdit(device)">Edit</button>
                     <button id="delete" (click)="onDelete(device)">Delete</button>
                   }
@@ -47,9 +49,6 @@ import { debounceTime, distinctUntilChanged, switchMap } from "rxjs";
                     }
                     @else if(device.currentUserFullName === authService.user.fullName){
                       <button class="unassign-btn" (click)="onUnassign(device)">Unassign</button>
-                    }
-                    @else {
-                      <span id="no-action-text">No actions</span>
                     }
                   }
                 </td>
