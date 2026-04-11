@@ -17,45 +17,47 @@ import { debounceTime, distinctUntilChanged, switchMap } from "rxjs";
       @if(authService.user.roleName === "admin"){
         <button id="add-btn" (click)="onAddNewDevice()">Add new device</button>
       }
-      <table class="device-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Manufacturer</th>
-            <th>Current User</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for(device of devices(); track $index){
+      <div class="table-wrapper">
+        <table class="device-table">
+          <thead>
             <tr>
-              <td>{{ device.name }}</td>
-              <td>{{ device.deviceTypeName }}</td>
-              <td>{{ device.manufacturer}}</td>
-              <td>{{ device.currentUserFullName }}</td>
-              <td class="action-buttons">
-                @if(authService.user.roleName === "admin"){
-                  <button (click)="onDetails(device)">Details</button>
-                  <button (click)="onEdit(device)">Edit</button>
-                  <button id="delete" (click)="onDelete(device)">Delete</button>
-                }
-                @else {
-                  @if(device.currentUserFullName === "Unassigned") {
-                    <button (click)="onAssign(device)">Assign</button>
-                  }
-                  @else if(device.currentUserFullName === authService.user.fullName){
-                    <button (click)="onUnassign(device)">Unassign</button>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Manufacturer</th>
+              <th>Current User</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for(device of devices(); track $index){
+              <tr>
+                <td>{{ device.name }}</td>
+                <td>{{ device.deviceTypeName }}</td>
+                <td>{{ device.manufacturer}}</td>
+                <td>{{ device.currentUserFullName }}</td>
+                <td class="action-buttons">
+                  @if(authService.user.roleName === "admin"){
+                    <button (click)="onDetails(device)">Details</button>
+                    <button (click)="onEdit(device)">Edit</button>
+                    <button id="delete" (click)="onDelete(device)">Delete</button>
                   }
                   @else {
-                    <span id="no-action-text">No actions</span>
+                    @if(device.currentUserFullName === "Unassigned") {
+                      <button (click)="onAssign(device)">Assign</button>
+                    }
+                    @else if(device.currentUserFullName === authService.user.fullName){
+                      <button class="unassign-btn" (click)="onUnassign(device)">Unassign</button>
+                    }
+                    @else {
+                      <span id="no-action-text">No actions</span>
+                    }
                   }
-                }
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
       @if(deviceFormOpen){
         <app-device-form
         (saved)="onSaved()"

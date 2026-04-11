@@ -1,10 +1,20 @@
 .container{
   display: flex;
   flex-direction: column;
+  height: calc(100vh - 180px);
+  overflow: hidden;
   gap: 10px;
   font-family: 'Roboto', sans-serif;
   padding: 20px;
 }
+
+
+.table-actions{
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 10px;
+}
+
 
 #add-btn{
   background-color: rgb(123, 123, 243);
@@ -26,13 +36,23 @@
   box-shadow: 0 0 5px rgba(0,123,255,0.2);
 }
 
+.table-wrapper{
+  flex: 1;
+  overflow-y: auto;
+}
+
 .device-table{
   border-collapse: collapse;
+  width: 100%;
 }
 
 .device-table th{
+  position: sticky;
+  top: 0;
   background-color: rgb(123, 123, 243);
   color: white;
+  font-weight: 600;
+  font-size: 1.2rem;
   padding: 10px;
   text-align: left;
 }
@@ -62,4 +82,8 @@
 #no-action-text{
   color: #999;
   font-style: italic;
+}
+
+.unassign-btn{
+  background-color: rgb(189, 189, 189);
 }
