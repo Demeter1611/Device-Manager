@@ -5,12 +5,15 @@ import { DeviceForm } from "../device-form/device-form";
 import { DeviceDeleteComponent } from "../device-delete/device-delete";
 import { DeviceDetailsComponent } from "../device-details/device-details";
 import { AuthService } from "../services/auth-service";
+import { FormControl, ReactiveFormsModule } from "@angular/forms";
+import { debounceTime, distinctUntilChanged, switchMap } from "rxjs";
 
 @Component({
   selector: 'app-device-list',
   template: `
     <div class="container">
       <h2>Device Inventory</h2>
+      <input type="text" [formControl]="searchControl" class="search-input" placeholder="Search by name, manufacturer, processor or RAM(e.g. 8GB)"/>
       @if(authService.user.roleName === "admin"){
         <button id="add-btn" (click)="onAddNewDevice()">Add new device</button>
       }
@@ -73,19 +76,24 @@ import { AuthService } from "../services/auth-service";
     </div>
   `,
   styleUrl: './device-list.css',
-  imports: [DeviceForm, DeviceDeleteComponent, DeviceDetailsComponent]
+  imports: [DeviceForm, DeviceDeleteComponent, DeviceDetailsComponent, ReactiveFormsModule]
 })
 export class DeviceListComponent {
   deviceService = inject(DeviceService);
   authService = inject(AuthService);
+
   devices = signal<DeviceReadDto[]>([]);
+  searchControl = new FormControl('');
+
   deviceFormOpen: boolean = false;
   deleteOpen: boolean = false;
   detailsOpen: boolean = false;
   selectedDevice: DeviceReadDto | null = null;
 
+
   ngOnInit(){
     this.loadDevices();
+    this.setupSearch();
   }
 
   loadDevices() {
@@ -95,6 +103,22 @@ export class DeviceListComponent {
       },
       error: (err) => console.error('Error fetching devices', err)
     });
+  }
+
+  setupSearch() {
+    this.searchControl.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(query => {
+        if(!query || query.trim().length === 0){
+          return this.deviceService.getDevices();
+        }
+        return this.deviceService.searchDevices(query);
+      })
+    ).subscribe({
+      next: (data) => this.devices.set(data),
+      error: (err) => console.error('Search error', err)
+    })
   }
 
   onSaved(){

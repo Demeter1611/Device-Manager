@@ -47,4 +47,9 @@ export class DeviceService {
   generateDescription(device: DeviceReadDto): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/generate-description`, device);
   }
+
+  searchDevices(query: string): Observable<DeviceReadDto[]> {
+    const params = new HttpParams().set('query', query);
+    return this.http.get<DeviceReadDto[]>(`${this.apiUrl}/search`, { params });
+  }
 }

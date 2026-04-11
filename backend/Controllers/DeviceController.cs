@@ -210,4 +210,72 @@ public class DeviceController: ControllerBase
         var aiResponse = await _aiService.AskAsync(prompt);
         return Ok(new { description = aiResponse });
     }
+
+    [HttpGet("search")]
+    public async Task<ActionResult<IEnumerable<DeviceReadDto>>> Search([FromQuery] string query)
+    {
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            return await GetDevices();
+        }
+
+        var cleanQuery = new string(query.Where(c => !char.IsPunctuation(c)).ToArray()).ToLower();
+
+        var tokens = cleanQuery.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+        var allDevices = await _context.Devices
+            .Include(d => d.DeviceType)
+            .Include(d => d.CurrentUser)
+            .ToListAsync();
+        
+        var rankedResults = allDevices.Select(device => new { Device = device, Score = CalculateScore(device, tokens)})
+            .Where(x => x.Score > 0)
+            .OrderByDescending(x => x.Score)
+            .ThenBy(x => x.Device.Name)
+            .Select(x => x.Device.MapToReadDto())
+            .ToList();
+        
+        return Ok(rankedResults);
+    }
+
+    private int CalculateScore(Device device, string[] tokens)
+    {
+        int score = 0;
+        foreach (var token in tokens)
+        {
+            bool foundMatchForCurrentToken = false;
+            if(device.Name.Contains(token, StringComparison.OrdinalIgnoreCase))
+            {
+                score += 10;
+                foundMatchForCurrentToken = true;
+            }
+            if(device.Manufacturer.Contains(token, StringComparison.OrdinalIgnoreCase))
+            {
+                score += 5;
+                foundMatchForCurrentToken = true;
+            }
+            if(device.Processor.Contains(token, StringComparison.OrdinalIgnoreCase))
+            {
+                score += 3;
+                foundMatchForCurrentToken = true;
+            }
+
+            string numericToken = token.Replace("gb", "");
+
+            if (device.RamAmount.ToString() == numericToken)
+            {
+                score += 1;
+                foundMatchForCurrentToken = true;
+            } else if (token == "gb")
+            {
+                foundMatchForCurrentToken = true;
+            }
+
+            if (!foundMatchForCurrentToken)
+            {
+                return 0;
+            }
+        }
+        return score;
+    }
 }
