@@ -2,7 +2,7 @@ import { DeviceReadDto } from './../interfaces/device';
 import { Component, inject, input, output, signal } from "@angular/core";
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { DeviceService } from "../services/device-service";
-import { catchError, map, of } from 'rxjs';
+import { catchError, map, of, switchMap, timer } from 'rxjs';
 
 @Component({
   selector: 'app-device-form',
@@ -185,15 +185,16 @@ export class DeviceForm{
     return (control: AbstractControl) => {
       const name = control.value;
       const device = this.selectedDevice();
+
       if (!name) {
         return of(null);
       }
-      return this.deviceService
-        .checkNameExists(name, device?.id)
-        .pipe(
-          map(exists => (exists ? { nameTaken: true } : null)),
-          catchError(() => of(null as any))
-        );
+
+      return timer(500).pipe(
+        switchMap(() => this.deviceService.checkNameExists(name, device?.id)),
+        map(exists => (exists ? { nameTaken: true } : null)),
+        catchError(() => of(null))
+      );
     };
   }
 
