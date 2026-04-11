@@ -43,4 +43,8 @@ export class DeviceService {
   unassignDevice(id: number): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/unassign/${id}`, {});
   }
+
+  generateDescription(device: DeviceReadDto): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/generate-description`, device);
+  }
 }

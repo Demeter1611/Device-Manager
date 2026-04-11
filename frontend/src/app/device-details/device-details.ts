@@ -34,7 +34,7 @@ import { DeviceReadDto } from "../interfaces/device";
           </div>
           <div class="details-field">
             <span class="field-label">RAM amount</span>
-            <p class="field-info">{{selectedDevice().ramAmount}} MB</p>
+            <p class="field-info">{{selectedDevice().ramAmount}} GB</p>
           </div>
           <div class="details-field description-field">
             <span class="field-label">Description</span>

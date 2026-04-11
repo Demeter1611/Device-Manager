@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using backend.Data;
+using backend.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -41,6 +42,10 @@ builder.Services.AddAuthentication(options =>
         RoleClaimType = System.Security.Claims.ClaimTypes.Role         
     };
 });
+
+var apiKey = builder.Configuration["Grok:ApiKey"] ?? "";
+
+builder.Services.AddSingleton(new AiService(apiKey));
 
 var app = builder.Build();
 

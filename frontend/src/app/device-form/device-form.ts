@@ -1,5 +1,5 @@
 import { DeviceReadDto } from './../interfaces/device';
-import { Component, inject, input, output } from "@angular/core";
+import { Component, inject, input, output, signal } from "@angular/core";
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { DeviceService } from "../services/device-service";
 import { catchError, map, of } from 'rxjs';
@@ -33,7 +33,7 @@ import { catchError, map, of } from 'rxjs';
 
           <div class="form-field">
             <label>Type</label>
-            <select formControlName="deviceTypeId">
+            <select class="text-input" formControlName="deviceTypeId">
               <option [ngValue]="1">Phone</option>
               <option [ngValue]="2">Tablet</option>
             </select>
@@ -64,10 +64,10 @@ import { catchError, map, of } from 'rxjs';
           </div>
 
           <div class="form-field">
-            <label for="ram-amount">RAM amount (MB)</label>
+            <label for="ram-amount">RAM amount (GB)</label>
             <input class="text-input" id="ram-amount" type="number" formControlName="ramAmount">
             @if (deviceForm.get('ramAmount')?.errors?.['min'] && deviceForm.get('ramAmount')?.touched) {
-              <span class="error-text">RAM must be at least 1 MB.</span>
+              <span class="error-text">RAM must be at least 1 GB.</span>
             }
             @else if(isInvalid("ramAmount")){
               <span class="error-text">Field required</span>
@@ -76,6 +76,7 @@ import { catchError, map, of } from 'rxjs';
 
           <div class="form-field description-field">
             <label for="description">Description</label>
+            <button (click)="generateDescription()" [disabled]="isGenerating()">{{ isGenerating() ? 'Generating...' : 'Generate with AI'}}</button>
             <textarea class="text-input" id="description" formControlName="description" rows="4" placeholder="A short description of the device"></textarea>
             @if(isInvalid("description")){
               <span class="error-text">Field required</span>
@@ -98,6 +99,7 @@ export class DeviceForm{
   deviceForm!: FormGroup;
   deviceService = inject(DeviceService);
   mode: string = "add";
+  isGenerating = signal<boolean>(false);
 
 
   selectedDevice = input<DeviceReadDto | null>();
@@ -193,5 +195,35 @@ export class DeviceForm{
           catchError(() => of(null as any))
         );
     };
+  }
+
+  generateDescription() {
+    const requiredFields = [
+      'name', 'manufacturer', 'operatingSystem', 'osVersion', 'processor', 'ramAmount'
+    ];
+
+    const isFormReady = requiredFields.every(field => this.deviceForm.get(field)?.valid);
+    if(!isFormReady) {
+      requiredFields.forEach(field => {
+        this.deviceForm.get(field)?.markAsTouched();
+      });
+
+      alert("Please fill in all technical specifications before generating a description");
+      return;
+    }
+
+    this.isGenerating.set(true);
+    const device = this.deviceForm.value;
+
+    this.deviceService.generateDescription(device).subscribe({
+      next: (val) => {
+        this.deviceForm.patchValue({ description: val.description });
+        this.isGenerating.set(false);
+      },
+      error: (err) => {
+        alert(`Error: ${err.message}`);
+        this.isGenerating.set(false);
+      }
+    })
   }
 }
