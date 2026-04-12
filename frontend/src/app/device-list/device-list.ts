@@ -110,7 +110,6 @@ export class DeviceListComponent {
 
   loadDevices() {
     this.devicesLoading.set(true);
-    setTimeout(() => {}, 5000);
     this.deviceService.getDevices().subscribe({
       next: (data) => {
         this.devices.set(data);
