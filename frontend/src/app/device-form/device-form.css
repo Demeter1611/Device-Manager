@@ -45,3 +45,37 @@ textarea{
 .description-field{
   grid-column: span 2;
 }
+
+
+@media (max-width: 600px) {
+  form {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .description-field {
+    grid-column: span 1;
+  }
+
+  .text-input, select {
+    font-size: 16px;
+    padding: 12px;
+  }
+
+  .form-buttons {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .form-buttons button {
+    padding: 14px;
+    font-size: 1rem;
+    width: 100%;
+  }
+
+  h3 {
+    text-align: center;
+    margin-top: 0;
+    font-size: 1.2rem;
+  }
+}

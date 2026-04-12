@@ -58,3 +58,22 @@ button:hover{
   cursor: pointer;
   opacity: 0.8;
 }
+
+@media (max-width: 768px) {
+
+  .modal-content {
+    min-width: 90%;
+    max-width: 95%;
+    width: 95%;
+    padding: 1.5rem 1rem;
+    margin: 10px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .text-input {
+    font-size: 1rem;
+    padding: 10px;
+    width: 90%;
+  }
+}

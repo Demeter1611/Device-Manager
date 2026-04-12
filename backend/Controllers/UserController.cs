@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using backend.Data;
 using backend.Models;
 using backend.DTOs;
@@ -7,6 +8,7 @@ namespace backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class UserController: ControllerBase
 {
     private readonly AppDbContext _context;

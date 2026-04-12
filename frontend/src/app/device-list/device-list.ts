@@ -33,10 +33,10 @@ import { debounceTime, distinctUntilChanged, switchMap } from "rxjs";
           <tbody>
             @for(device of devices(); track $index){
               <tr>
-                <td>{{ device.name }}</td>
-                <td>{{ device.deviceTypeName }}</td>
-                <td>{{ device.manufacturer}}</td>
-                <td [class.unassigned-text] = "device.currentUserFullName === 'Unassigned' ">{{ device.currentUserFullName }}</td>
+                <td data-label="Name">{{ device.name }}</td>
+                <td data-label="Type">{{ device.deviceTypeName }}</td>
+                <td data-label="Manufacturer">{{ device.manufacturer}}</td>
+                <td data-label="User" [class.unassigned-text] = "device.currentUserFullName === 'Unassigned' ">{{ device.currentUserFullName }}</td>
                 <td class="action-buttons">
                   <button (click)="onDetails(device)">Details</button>
                   @if(authService.user.roleName === "admin"){

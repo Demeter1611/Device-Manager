@@ -103,3 +103,65 @@
   color: grey;
   font-style: italic;
 }
+
+
+@media (max-width: 768px) {
+  .table-actions {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .device-table thead {
+    display: none;
+  }
+
+  .device-table, .device-table tbody, .device-table tr, .device-table td {
+    display: block;
+  }
+
+  .device-table tr {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+
+  .device-table td {
+    text-align: right;
+    padding: 10px 5px;
+    position: relative;
+    border-bottom: 1px solid #eee;
+  }
+
+  .device-table td:last-child {
+    border-bottom: 0;
+  }
+
+  .device-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    width: 45%;
+    text-align: left;
+    font-weight: bold;
+    color: #666;
+  }
+
+  .device-table td.action-buttons {
+    display: flex;
+    width: 100%;
+  }
+
+  .action-buttons {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .action-buttons button {
+    flex: 1;
+    width: auto;
+    padding: 10px 5px;
+  }
+}
