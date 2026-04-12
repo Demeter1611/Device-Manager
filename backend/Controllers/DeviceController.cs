@@ -188,24 +188,19 @@ public class DeviceController: ControllerBase
             
             You must evaluate the hardware to determine the device's actual capability.
             Evaluation Rules:
-            1. Legacy (Low Specs: <4GB RAM or old CPU)
-            2. Standard(Mid Specs: 8GB-12GB RAM):
-            3. High-End(High specs: >12GB RAM or flagship CPU)
 
-            TERMS guideline:
-            1.Legacy: avoid "fast", "powerful" etc.
-            2.Standard: use terms like "dependable for day-to-day operations", "suitable for everday use", "efficient multitasking" "versatile office performance"
-            3.High-End: "seamlessly handles intensive operations", "top-tier professional workflows", "suitable for complex tasks"
-            Do not use all of these terms in a description. Guide yourself by them.
+            - LEGACY (<=4GB RAM): Focus on basic documentation, communication, email management and the need for patience.
+            - STANDARD (8-12GB RAM): Focus on smooth office workflows and web-heavy tasks. Also it is balanced for many use cases such as video calls or the ones mentioned before
+            - HIGH-END (>12GB RAM or Flagship CPU): Focus on absolute speed and heavy professional processing.
 
             -Write it as a single, fluid sentence.
             -Do not list hardware specs as technical data unless they significantly define the device
             -Focus on the device's feel and capability, not its numbers.
             -Do not mention: gaming, hobbies, entertainment, movies, or personal passions.
-            -Vary your vocabulary. Do not repeat the same phrases for every device.
-            -Vary your sentence structure. Start sometimes with the brand, sometimes with a descriptor.
+            -Vary the structure. start with the name. Use verbs or adjectives to lead.
             -No numbers from specs
             -Jump straight to the point.
+            BANNED WORDS: dependable, reliable, essential, perfect, great.
         """";
         var aiResponse = await _aiService.AskAsync(prompt);
         return Ok(new { description = aiResponse });
