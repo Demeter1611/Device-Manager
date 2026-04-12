@@ -54,6 +54,16 @@ import { debounceTime, distinctUntilChanged, switchMap } from "rxjs";
                 </td>
               </tr>
             }
+            @if(devicesLoading()){
+              <td colspan="5" class="no-results">
+                <p>Fetching devices...</p>
+              </td>
+            }
+            @else if(devices().length === 0){
+              <td colspan="5" class="no-results">
+                <p>No devices found</p>
+              </td>
+            }
           </tbody>
         </table>
       </div>
@@ -91,6 +101,7 @@ export class DeviceListComponent {
   detailsOpen: boolean = false;
   selectedDevice: DeviceReadDto | null = null;
 
+  devicesLoading = signal<boolean>(false);
 
   ngOnInit(){
     this.loadDevices();
@@ -98,11 +109,17 @@ export class DeviceListComponent {
   }
 
   loadDevices() {
+    this.devicesLoading.set(true);
+    setTimeout(() => {}, 5000);
     this.deviceService.getDevices().subscribe({
       next: (data) => {
         this.devices.set(data);
+        this.devicesLoading.set(false);
       },
-      error: (err) => console.error('Error fetching devices', err)
+      error: (err) => {
+        console.error('Error fetching devices', err)
+        this.devicesLoading.set(false);
+      }
     });
   }
 

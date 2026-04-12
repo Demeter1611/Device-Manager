@@ -46,6 +46,12 @@
   width: 100%;
 }
 
+.device-table th:nth-child(1) { width: 30%; } /* Name */
+.device-table th:nth-child(2) { width: 10%; } /* Type */
+.device-table th:nth-child(3) { width: 15%; } /* Manufacturer */
+.device-table th:nth-child(4) { width: 15%; } /* Current User */
+.device-table th:nth-child(5) { width: 30%; } /* Actions */
+
 .device-table th{
   position: sticky;
   top: 0;
@@ -88,6 +94,12 @@
 }
 
 .unassigned-text{
+  color: grey;
+  font-style: italic;
+}
+
+.no-results{
+  text-align: center;
   color: grey;
   font-style: italic;
 }
